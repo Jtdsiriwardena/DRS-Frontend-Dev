@@ -1,21 +1,28 @@
-// Purpose: This template is used for the agent registration page.
-// Created Date: 2024-12-02
-// Created By: Chathundi Sakumini (sakuminic@gmail.com)
-// Last Modified Date: 2024-12-03
-// Modified By: 
-// Version: 
-// Dependencies: React
-// Related Files: bulk.jsx(1.1.1), individual.jsx(1.1.2)
-// Notes: completed bulk.jsx(1.1.1) using plugin with tailwind styles
+import React, { useState } from 'react';
+import GlobalStyle from '../../../assets/prototype/GlobalStyle';
 
 const Upload = () => {
+  const [selectedAction, setSelectedAction] = useState("");
+
+  const handleSubmit = () => {
+    if (selectedAction === "incidentCreation") {
+      window.location.href = '/pages/incident/file-download';
+    } else if (selectedAction === "distributeToDRC") {
+      window.location.href = '/pages/incident/details';
+    }else if (selectedAction === "incidentReject") {
+      window.location.href = '/incident/log/rejectlog';
+    }else {
+      alert("Please select 'Incident Creation' to proceed.");
+    }
+  };
+
   return (
     <div
       className="flex flex-col items-center pt-16 font-poppins"
       style={{ opacity: 0.95 }}
     >
       {/* Title */}
-      <h1 className="mb-6 text-5xl font-bold text-black">File Upload</h1>
+      <h1 className={`${GlobalStyle.headingLarge} pb-6`}>File Upload</h1>
 
       {/* Container */}
       <div className="w-full max-w-3xl p-12 bg-blue-50 rounded-lg shadow-md">
@@ -23,13 +30,18 @@ const Upload = () => {
         <div className="mb-6 flex justify-center">
           <select
             id="actionType"
-           className=" px-6 py-1 border-2 border-[#0056A2] border-opacity-30 rounded-lg bg-white text-left "
+            className={`${GlobalStyle.selectBox} w-fit`}
+            value={selectedAction}
+            onChange={(e) => setSelectedAction(e.target.value)}
           >
-            <option value="" disabled selected>
+            <option value="" disabled>
               ACTION TYPE
             </option>
-            <option value="upload">Action 1</option>
-            <option value="download">Action 2</option>
+            <option value="incidentCreation">Incident Creation</option>
+            <option value="distributeToDRC">Distribute to DRC</option>
+            <option value="validityPeriodExtend">Validity Period Extend</option>
+            <option value="holdCases">Hold Cases</option>
+            <option value="incidentReject">Incident Reject</option>
           </select>
         </div>
 
@@ -58,8 +70,9 @@ const Upload = () => {
         {/* Submit Button */}
         <div className="flex justify-end">
           <button
-            type="submit"
-            className="px-5 py-1 text-white bg-[#00256A] rounded-lg hover:bg-blue-900 transition-all"
+            type="button"
+            className={GlobalStyle.buttonPrimary}
+            onClick={handleSubmit}
           >
             Submit
           </button>

@@ -9,6 +9,8 @@
 // Notes: completed individual.jsx using plugin with tailwind styles
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import GlobalStyle from "../../../assets/prototype/GlobalStyle";
 
 const IncidentRegister = () => {
   const [formData, setFormData] = useState({
@@ -24,89 +26,92 @@ const IncidentRegister = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center font-poppins">
-      <div className="p-8">
-        <h1 className="text-4xl font-bold mb-8">Incident Register</h1>
+    <div className={GlobalStyle.fontPoppins}>
+      <h1 className={GlobalStyle.headingLarge}>Incident Register</h1>
+    <div className="flex items-center justify-center p-8">
+    <div className="relative bg-[#E1E4F5] rounded-lg p-8 max-w-3xl">
+  <h2 className={`${GlobalStyle.headingMedium} mb-6`}>Incident Details</h2>
 
-        <div className="relative bg-[#E1E4F5] rounded-lg p-6 max-w-2xl">
-          <h2 className="text-3xl font-semibold mb-6">Incident Details</h2>
+  <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="space-y-6">
+      {/* Account Number */}
+      <div className="flex flex-col gap-4">
+        <label className={`${GlobalStyle.headingSmall}`}>
+          Account No
+        </label>
+        <input
+          type="text"
+          className={`${GlobalStyle.inputText} text-lg p-3`}
+          value={formData.accountNo}
+          onChange={(e) =>
+            setFormData({ ...formData, accountNo: e.target.value })
+          }
+        />
+      </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-4">
-              {/* Account Number */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Account No
-                </label>
-                <input
-                  type="text"
-                  className="w-[371px] h-12 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={formData.accountNo}
-                  onChange={(e) =>
-                    setFormData({ ...formData, accountNo: e.target.value })
-                  }
-                />
-              </div>
+      {/* Action Type */}
+      <div className="flex flex-col gap-4">
+        <label className={`${GlobalStyle.headingSmall}`}>
+          Action
+        </label>
+        <select
+          className={`${GlobalStyle.selectBox} text-lg p-3 w-full`}
+          value={formData.actionType}
+          onChange={(e) =>
+            setFormData({ ...formData, actionType: e.target.value })
+          }
+        >
+          <option value="">Action Type</option>
+          <option value="arrears">Collect Arrears</option>
+          <option value="arrears&CPE">Collect Arrears and CPE</option>
+          <option value="CPE">Collect CPE</option>
+        </select>
+      </div>
 
-              {/* Action Type */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Action
-                </label>
-                <select
-                  className="w-[371px] h-12 px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={formData.actionType}
-                  onChange={(e) =>
-                    setFormData({ ...formData, actionType: e.target.value })
-                  }
-                >
-                  <option value="">Action Type</option>
-                  <option value="type1">Type 1</option>
-                  <option value="type2">Type 2</option>
-                </select>
-              </div>
+      {/* Calendar Month */}
+      <div className="flex flex-col gap-4">
+        <label className={`${GlobalStyle.headingSmall}`}>
+          Calendar Month
+        </label>
+        <input
+          type="number"
+          min="1"
+          max="12"
+          className={`${GlobalStyle.inputText} text-lg p-3`}
+          value={formData.calendarMonth}
+          onChange={(e) =>
+            setFormData({ ...formData, calendarMonth: e.target.value })
+          }
+        />
+      </div>
 
-              {/* Calendar Month */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Calendar Month
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  max="12"
-                  className="w-16 h-12 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={formData.calendarMonth}
-                  onChange={(e) =>
-                    setFormData({ ...formData, calendarMonth: e.target.value })
-                  }
-                />
-              </div>
+      {/* Date without Icon */}
+      <div className="flex flex-col gap-4">
+        <label className={`${GlobalStyle.headingSmall}`}>
+          Date
+        </label>
+        <input
+          type="date"
+          className={`${GlobalStyle.inputText} text-lg p-3`}
+          value={formData.date}
+          onChange={(e) =>
+            setFormData({ ...formData, date: e.target.value })
+          }
+        />
+      </div>
+    </div>
+    <div className="flex justify-end mt-6">
+      <Link
+        type="submit"
+        className={`${GlobalStyle.buttonPrimary} text-lg p-4`}
+        to="/pages/incident/details"
+      >
+        Submit
+      </Link>
+    </div>
+  </form>
+</div>
 
-              {/* Date without Icon */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Date
-                </label>
-                <input
-                  type="date"
-                  className="w-[371px] h-12 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={formData.date}
-                  onChange={(e) =>
-                    setFormData({ ...formData, date: e.target.value })
-                  }
-                />
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="px-5 py-1 text-white bg-[#00256A] rounded-lg hover:bg-blue-900 transition-all"
-            >
-              Submit
-            </button>
-          </form>
-        </div>
       </div>
     </div>
   );

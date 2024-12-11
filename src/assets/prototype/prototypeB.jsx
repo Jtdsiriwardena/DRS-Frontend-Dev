@@ -3,14 +3,16 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaSearch, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import GlobalStyle from "./GlobalStyle";
 
-const TableComponent = () => {
-  const [fromDate, setFromDate] = useState(null);
-  const [toDate, setToDate] = useState(null);
-  const [error, setError] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate();
+const PrototypeB = () => {
+  const [fromDate, setFromDate] = useState(null);  //for date
+  const [toDate, setToDate] = useState(null); // for date
+  const [error, setError] = useState(""); // for error message
+  const [searchQuery, setSearchQuery] = useState(""); // for searching
+  const navigate = useNavigate(); // for navigate
 
+  // validation for date
   const handleFromDateChange = (date) => {
     if (toDate && date > toDate) {
       setError("The 'From' date cannot be later than the 'To' date.");
@@ -20,6 +22,7 @@ const TableComponent = () => {
     }
   };
 
+  // validation for date
   const handleToDateChange = (date) => {
     if (fromDate && date < fromDate) {
       setError("The 'To' date cannot be earlier than the 'From' date.");
@@ -29,6 +32,7 @@ const TableComponent = () => {
     }
   };
 
+  //dummy data for table
   const data = [
     {
       id: "#R100",
@@ -52,8 +56,42 @@ const TableComponent = () => {
       createdDate: "25 Jan, 10:40 PM",
       lastPaidDate: "25 Nov, 10:40 PM",
     },
+    {
+      id: "#R101",
+      status: "down",
+      accountNo: "#12548796",
+      serviceType: "LTE",
+      amount: "11,500",
+      agent: "Prompt",
+      rtom: "DM",
+      createdDate: "25 Jan, 10:40 PM",
+      lastPaidDate: "25 Nov, 10:40 PM",
+    },
+    {
+      id: "#R101",
+      status: "down",
+      accountNo: "#12548796",
+      serviceType: "LTE",
+      amount: "11,500",
+      agent: "Prompt",
+      rtom: "DM",
+      createdDate: "25 Jan, 10:40 PM",
+      lastPaidDate: "25 Nov, 10:40 PM",
+    },
+    {
+      id: "#R101",
+      status: "down",
+      accountNo: "#12548796",
+      serviceType: "LTE",
+      amount: "11,500",
+      agent: "Prompt",
+      rtom: "DM",
+      createdDate: "25 Jan, 10:40 PM",
+      lastPaidDate: "25 Nov, 10:40 PM",
+    },
   ];
 
+  //search fuction
   const filteredData = data.filter((row) =>
     Object.values(row)
       .join(" ")
@@ -62,78 +100,134 @@ const TableComponent = () => {
   );
 
   return (
-    <div className="p-4 font-poppins">
+    <div className={`p-4 ${GlobalStyle.fontPoppins}`}>
+
+      {/* case count Bar */}
+      <div className={`${GlobalStyle.caseCountBar}`}>
+  <div className="flex">
+    <span className={GlobalStyle.countBarTopic}>Case count</span>
+  </div>
+  <div className={GlobalStyle.countBarSubTopicContainer}>
+    <div className={GlobalStyle.countBarMainBox}>
+      <span>Total:</span>
+      <p className={GlobalStyle.countBarMainTopic}>1259</p>
+    </div>
+    <div className={GlobalStyle.countBarSubBox}>
+      <span>5,000 - 10,000</span>
+      <p className={GlobalStyle.countBarSubTopic}>100</p>
+    </div>
+    <div className={GlobalStyle.countBarSubBox}>
+      <span>10,000 - 25,000</span>
+      <p className={GlobalStyle.countBarSubTopic}>250</p>
+    </div>
+    <div className={GlobalStyle.countBarSubBox}>
+      <span>25,000 - 50,000</span>
+      <p className={GlobalStyle.countBarSubTopic}>800</p>
+    </div>
+    <div className={GlobalStyle.countBarSubBox}>
+      <span>50,000 - 100,000</span>
+      <p className={GlobalStyle.countBarSubTopic}>61</p>
+    </div>
+    <div className={GlobalStyle.countBarSubBox}>
+      <span>&gt; 100,000</span>
+      <p className={GlobalStyle.countBarSubTopic}>98</p>
+    </div>
+  </div>
+</div>
+
+
+        {/* card box*/}
+      <div className={`${GlobalStyle.cardContainer}`}>
+        <p className="mb-2"><strong>Case ID:</strong></p>
+        <p className="mb-2"><strong>Customer Ref:</strong> </p>
+        <p className="mb-2"><strong>Account no:</strong> </p>
+        <p className="mb-2"><strong>Arrears Amount:</strong> </p>
+        <p className="mb-2"><strong>Last Payment Date:</strong> </p>
+      </div>
+
+      {/* remark box */}
+      <div className="mb-6">
+        <label className={GlobalStyle.remarkTopic}>Remark</label>
+        <textarea
+          value=""
+          className={`${GlobalStyle.remark}`}
+          rows="5"
+        ></textarea>
+      </div>
+
       <h1 className="flex">Date picker</h1>
       <br/>
       {/* Date Picker Section */}
       <div className="flex flex-col mb-4">
-        <div className="flex gap-4 items-center p-2 rounded border border-gray-300 bg-blue-50 bg-opacity-50 w-fit">
-          <label className="text-gray-600 font-medium">Date </label>
+        <div className={GlobalStyle.datePickerContainer}>
+          <label className={GlobalStyle.dataPickerDate}>Date </label>
           <DatePicker
             selected={fromDate}
             onChange={handleFromDateChange}
             dateFormat="dd/MM/yyyy"
             placeholderText="dd/MM/yyyy"
-            className="border rounded w-40 h-10 p-2 text-sm text-gray-700 bg-white bg-opacity-75"
+            className={GlobalStyle.inputText}
           />
           <DatePicker
             selected={toDate}
             onChange={handleToDateChange}
             dateFormat="dd/MM/yyyy"
             placeholderText="dd/MM/yyyy"
-            className="border rounded w-40 h-10 p-2 text-sm text-gray-700 bg-white bg-opacity-75"
+            className={GlobalStyle.inputText}
           />
         </div>
-        {error && <span className="text-red-500 mt-2">{error}</span>}
+        {error && <span className={GlobalStyle.errorText}>{error}</span>}
       </div>
       <br/>
-      <h1 className="flex">Table</h1>
+      <h1 className={`${GlobalStyle.headingLarge}`}>Table</h1>
+      <h1 className={GlobalStyle.headingMedium}>Table heading</h1>
+      <h1 className={GlobalStyle.headingSmall}>Table data</h1>
       <br />
 
       {/* Search Bar Section */}
-      <div className="mb-4 flex justify-end">
-        <div className="relative">
+      <div className="mb-4 flex justify-start">
+        <div className={GlobalStyle.searchBarContainer}>
           <input
             type="text"
             placeholder=""
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="px-4 py-2 pl-10 w-64 rounded-full border border-blue-400 bg-blue-200 text-sm text-blue-900 placeholder:text-blue-600 outline-none focus:ring focus:ring-blue-400 focus:border-blue-500 opacity-80"
+            className={GlobalStyle.inputSearch}
           />
-          <FaSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 text-blue-600" />
+          <FaSearch className={GlobalStyle.searchBarIcon} />
         </div>
       </div>
 
       {/* Table Section */}
-      <div className="overflow-hidden rounded-lg shadow-md border border-[#0087FF] border-opacity-15 bg-[#77BFFF] bg-opacity-25">
-        <table className="min-w-full text-sm text-left text-gray-500">
-          <thead className="text-xs text-[#718EBF] uppercase bg-gray-50 bg-opacity-75">
+      <div className={GlobalStyle.tableContainer}>
+        <table className={GlobalStyle.table}>
+          <thead className={GlobalStyle.thead}>
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className={GlobalStyle.tableHeader}>
                 ID
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className={GlobalStyle.tableHeader}>
                 Status
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className={GlobalStyle.tableHeader}>
                 Account No
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className={GlobalStyle.tableHeader}>
                 Service Type
               </th>
-              <th scope="col" className="px-6 py-3">
-                Amount (LKR)
+              <th scope="col" className={GlobalStyle.tableHeader}>
+                Amount
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className={GlobalStyle.tableHeader}>
                 Agent
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className={GlobalStyle.tableHeader}>
                 RTOM
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className={GlobalStyle.tableHeader}>
                 Created Date
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className={GlobalStyle.tableHeader}>
                 Last Paid Date
               </th>
             </tr>
@@ -141,33 +235,31 @@ const TableComponent = () => {
           <tbody>
             {filteredData.map((row, index) => (
               <tr
-                key={index}
-                className={`${
-                  index % 2 === 0
-                    ? "bg-white bg-opacity-75"
-                    : "bg-gray-50 bg-opacity-50"
-                } border-b`}
+                key={row.id}
+                className={index % 2 === 0 ? GlobalStyle.tableRowEven : GlobalStyle.tableRowOdd}
               >
-                <td className="px-6 py-4">{row.id}</td>
-                <td className="px-6 py-4">
-                  {row.status === "up" ? (
-                    <span className="text-green-500">&#8593;</span>
-                  ) : (
-                    <span className="text-blue-500">&#8595;</span>
-                  )}
+                <td className={GlobalStyle.tableData}>{row.id}</td>
+                <td className={GlobalStyle.tableData}>
+                  <span
+                    className={`${
+                      row.status === "up" ? "text-green-500" : "text-red-500"
+                    } font-bold`}
+                  >
+                    {row.status}
+                  </span>
                 </td>
-                <td className="px-6 py-4">{row.accountNo}</td>
-                <td className="px-6 py-4">{row.serviceType}</td>
-                <td className="px-6 py-4 text-red-500">{row.amount}</td>
-                <td className="px-6 py-4">{row.agent}</td>
-                <td className="px-6 py-4">{row.rtom}</td>
-                <td className="px-6 py-4">{row.createdDate}</td>
-                <td className="px-6 py-4">{row.lastPaidDate}</td>
+                <td className={GlobalStyle.tableData}>{row.accountNo}</td>
+                <td className={GlobalStyle.tableData}>{row.serviceType}</td>
+                <td className={GlobalStyle.tableData}>{row.amount}</td>
+                <td className={GlobalStyle.tableData}>{row.agent}</td>
+                <td className={GlobalStyle.tableData}>{row.rtom}</td>
+                <td className={GlobalStyle.tableData}>{row.createdDate}</td>
+                <td className={GlobalStyle.tableData}>{row.lastPaidDate}</td>
               </tr>
             ))}
             {filteredData.length === 0 && (
               <tr>
-                <td colSpan="9" className="text-center py-4">
+                <td colSpan="9" className={GlobalStyle.errorText}>
                   No results found
                 </td>
               </tr>
@@ -175,18 +267,18 @@ const TableComponent = () => {
           </tbody>
         </table>
       </div>
-      <div className="flex justify-center items-center gap-6 p-4">
-        {/* Previous Page Link */}
+
+      {/* Navigation Buttons */}
+      <div className={GlobalStyle.navButtonContainer}>
         <button
-          className="flex items-center gap-2 px-2 py-2 text-[#00256A] border-2 border-[#00256A] rounded-full hover:bg-blue-100 transition-all"
-          onClick={() => navigate("/prototypeA")}
+          onClick={() => navigate("/")}
+          className={GlobalStyle.navButton}
         >
           <FaArrowLeft />
         </button>
-        {/* Next Page Link */}
         <button
-          className="flex items-center gap-2 px-2 py-2 text-[#00256A] border-2 border-[#00256A] rounded-full hover:bg-blue-100 transition-all"
-          onClick={() => navigate("/prototypeB")}
+          onClick={() => navigate("/next")}
+          className={GlobalStyle.navButton}
         >
           <FaArrowRight />
         </button>
@@ -195,4 +287,4 @@ const TableComponent = () => {
   );
 };
 
-export default TableComponent;
+export default PrototypeB;

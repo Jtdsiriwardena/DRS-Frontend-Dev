@@ -10,13 +10,16 @@ Related Files: (routes)
 Notes: */
 import React, { useState } from 'react';
 import { FaDownload, FaArrowLeft, FaArrowRight } from 'react-icons/fa'; // Importing icons
+import { useNavigate } from 'react-router-dom'; // Importing useNavigate from react-router-dom for navigation
 import DatePicker from 'react-datepicker';
+import GlobalStyle from "../../../assets/prototype/GlobalStyle.jsx";
 import 'react-datepicker/dist/react-datepicker.css';
 
 const RejectIncidents = () => {
   const [source, setSource] = useState('');
-  const [dateFrom, setDateFrom] = useState(null);
-  const [dateTo, setDateTo] = useState(null);
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null); 
+  const [error, setError] = useState("");
   const [selectedIncidents, setSelectedIncidents] = useState([]);
   const [incidentStatus, setIncidentStatus] = useState('Rejected'); // Default to "Rejected" status
 
@@ -25,6 +28,8 @@ const RejectIncidents = () => {
     { id: 'RC002', accountNo: '8765946', reason: 'Customer Type = SLT', date: '15-Jan-2024', status: 'Rejected' },
     { id: 'RC003', accountNo: '3754918', reason: 'Customer Segment = 2467', date: '05-Feb-2024', status: 'Rejected' },
   ];
+
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const handleReject = (id) => {
     alert(`Reject clicked for ID: ${id}`);
@@ -50,32 +55,46 @@ const RejectIncidents = () => {
     return incident.status === incidentStatus;
   });
 
-  const handleFromDateChange = (date) => {
-    if (dateTo && date > dateTo) {
-      alert("The 'From' date cannot be later than the 'To' date.");
-    } else {
-      setDateFrom(date);
-    }
+ // validation for date
+ const handleFromDateChange = (date) => {
+  if (toDate && date > toDate) {
+    setError("The 'From' date cannot be later than the 'To' date.");
+  } else {
+    setError("");
+    setFromDate(date);
+  }
+};
+
+// validation for date
+const handleToDateChange = (date) => {
+  if (fromDate && date < fromDate) {
+    setError("The 'To' date cannot be earlier than the 'From' date.");
+  } else {
+    setError("");
+    setToDate(date);
+  }
+};
+
+  const handleDirectLOD = () => {
+    navigate('/incident/log/directlod'); // Navigate to Direct LOD page
   };
 
-  const handleToDateChange = (date) => {
-    if (dateFrom && date < dateFrom) {
-      alert("The 'To' date cannot be earlier than the 'From' date.");
-    } else {
-      setDateTo(date);
-    }
+  // New handler to navigate to incident details page
+  const handleOpenIncidents = () => {
+    navigate('/pages/incident/details'); // Navigate to incident details page
   };
+
+  
 
   return (
     <div className="p-6 min-h-screen opacity-80 font-poppins">
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-[40px] font-semibold mb-8">Rejected Incident Details</h2>
+        <h2 className={`${GlobalStyle.headingLarge} mb-5`}>Rejected Incident Details</h2>
 
         {/* Open Incidents and Reject Incidents Buttons */}
-        <div className="flex mb-0">
+        <div className="flex mb-5">
           <button
             className="bg-blue-50 text-black px-8 py-3 rounded-tl-lg rounded-tr-lg shadow hover:bg-[#1a3b55] hover:text-white"
-            onClick={() => setIncidentStatus('Open')}
+            onClick={handleOpenIncidents} // Trigger navigation to incident details page
           >
             Open Incidents
           </button>
@@ -85,15 +104,22 @@ const RejectIncidents = () => {
           >
             Reject Incidents
           </button>
+
+          <button
+            className="bg-blue-50 text-black px-8 py-3 rounded-tl-lg rounded-tr-lg shadow hover:bg-[#1a3b55] hover:text-white"
+            onClick={handleDirectLOD} // Trigger navigation to Direct LOD
+          >
+            Direct LOD
+          </button>
         </div>
 
         {/* Filter Section */}
-        <div className="bg-blue-50 p-6 rounded-b-lg mb-8">
+        <div className="mb-6">
           <div className="flex flex-wrap items-center gap-6 mb-0">
             <div className="flex items-center gap-2">
               <label className="text-lg font-bold text-black">Source:</label>
               <select
-                className="block w-32 h-10 rounded-md border border-black shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className={GlobalStyle.selectBox}
                 value={source}
                 onChange={(e) => setSource(e.target.value)}
               >
@@ -103,30 +129,30 @@ const RejectIncidents = () => {
               </select>
             </div>
 
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-gray-700">From:</label>
-              <DatePicker
-                selected={dateFrom}
-                onChange={handleFromDateChange}
-                dateFormat="dd/MM/yyyy"
-                placeholderText="dd/MM/yyyy"
-                className="border rounded w-40 h-10 p-2 text-sm text-gray-700 bg-white bg-opacity-75"
-              />
-            </div>
-
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-gray-700">To:</label>
-              <DatePicker
-                selected={dateTo}
-                onChange={handleToDateChange}
-                dateFormat="dd/MM/yyyy"
-                placeholderText="dd/MM/yyyy"
-                className="border rounded w-40 h-10 p-2 text-sm text-gray-700 bg-white bg-opacity-75"
-              />
-            </div>
+            <div className="flex flex-col mb-4">
+        <div className={GlobalStyle.datePickerContainer}>
+          <label className={GlobalStyle.dataPickerDate}>Date </label>
+          <DatePicker
+            selected={fromDate}
+            onChange={handleFromDateChange}
+            dateFormat="dd/MM/yyyy"
+            placeholderText="dd/MM/yyyy"
+            className={GlobalStyle.inputText}
+          />
+          <DatePicker
+            selected={toDate}
+            onChange={handleToDateChange}
+            dateFormat="dd/MM/yyyy"
+            placeholderText="dd/MM/yyyy"
+            className={GlobalStyle.inputText}
+          />
+        </div>
+        {error && <span className={GlobalStyle.errorText}>{error}</span>}
+      </div>
+              
 
             <button
-              className="bg-[#002342] text-white px-8 py-2 rounded-lg shadow hover:bg-[#1a3b55]"
+             className={GlobalStyle.buttonPrimary}
               onClick={handleRejectAll}
             >
               Filter
@@ -134,26 +160,26 @@ const RejectIncidents = () => {
           </div>
         </div>
 
-        {/* Table */}
-        <table className="min-w-full text-sm text-left text-gray-500">
-          <thead className="text-sm text-[#718EBF] uppercase bg-gray-50 bg-opacity-75">
+        <div className={GlobalStyle.tableContainer}>
+        <table className={GlobalStyle.table}>
+        <thead className={GlobalStyle.thead}>
             <tr>
-              <th className="px-6 py-3">Select</th>
-              <th className="px-6 py-3">ID</th>
-              <th className="px-6 py-3">Account No.</th>
-              <th className="px-6 py-3">Reason</th>
-              <th className="px-6 py-3">Rejected On</th>
-              <th className="px-6 py-3">Status</th>
-              <th className="px-6 py-3">Actions</th>
+              <th scope="col" className={GlobalStyle.tableHeader}>Select</th>
+              <th scope="col" className={GlobalStyle.tableHeader}>ID</th>
+              <th scope="col" className={GlobalStyle.tableHeader}>Account No.</th>
+              <th scope="col" className={GlobalStyle.tableHeader}>Reason</th>
+              <th scope="col" className={GlobalStyle.tableHeader}>Rejected On</th>
+              <th scope="col" className={GlobalStyle.tableHeader}>Status</th>
+              <th scope="col" className={GlobalStyle.tableHeader}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredIncidents.map((incident, index) => (
               <tr
                 key={index}
-                className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} border-b`}
+                className={`${index % 2 === 0 ? GlobalStyle.tableRowEven : GlobalStyle.tableRowOdd} border-b`}
               >
-                <td className="px-6 py-4 flex justify-center items-center">
+                <td className={GlobalStyle.tableData}>
                   <input
                     type="checkbox"
                     checked={selectedIncidents.includes(incident.id)}
@@ -161,14 +187,14 @@ const RejectIncidents = () => {
                     className="form-checkbox w-6 h-6"
                   />
                 </td>
-                <td className="px-6 py-4 text-blue-600 hover:underline cursor-pointer">{incident.id}</td>
-                <td className="px-6 py-4">{incident.accountNo}</td>
-                <td className="px-6 py-4">{incident.reason}</td>
-                <td className="px-6 py-4">{incident.date}</td>
-                <td className="px-6 py-4">{incident.status}</td>
-                <td className="px-6 py-4">
+                <td className={`${GlobalStyle.tableData} text-blue-600 hover:underline cursor-pointer `} >{incident.id}</td>
+                <td className={GlobalStyle.tableData}>{incident.accountNo}</td>
+                <td className={GlobalStyle.tableData}>{incident.reason}</td>
+                <td className={GlobalStyle.tableData}>{incident.date}</td>
+                <td className={GlobalStyle.tableData}>{incident.status}</td>
+                <td className={GlobalStyle.tableData}>
                   <button
-                    className="bg-[#002342] text-white px-4 py-2 rounded-lg shadow hover:bg-[#1a3b55]"
+                    className={GlobalStyle.buttonPrimary}
                     onClick={() => handleReject(incident.id)}
                   >
                     Reject
@@ -178,6 +204,7 @@ const RejectIncidents = () => {
             ))}
           </tbody>
         </table>
+        </div>
 
         {/* Download, Reject All, Move Forward Buttons */}
         <div className="mt-8 flex justify-end items-center gap-6">
@@ -185,38 +212,23 @@ const RejectIncidents = () => {
             <FaDownload size={30} className="text-blue-600 cursor-pointer" />
           </div>
           <button
-            className="bg-[#A1302A] text-white px-8 py-2 rounded-lg shadow hover:bg-[#8d2a25]"
-            onClick={handleRejectAll}
+            className={GlobalStyle.buttonPrimary}
+            onClick={() => window.location.href = '/incident/log/rejectlog'}
           >
             Reject All
           </button>
           <button
-            className="bg-[#002342] text-white px-8 py-2 rounded-lg shadow hover:bg-[#1a3b55]"
-            onClick={handleMoveForward}
+            className={GlobalStyle.buttonPrimary}
+            onClick={() => window.location.href = '/pages/incident/details'}
           >
             Move Forward
           </button>
         </div>
-
-        {/* Pagination Section */}
-        <div className="mt-6 flex justify-center items-center gap-6">
-          <button
-            className="flex items-center gap-2 px-2 py-2 text-[#00256A] border-2 border-[#00256A] rounded-full hover:bg-blue-100 transition-all"
-          >
-            <FaArrowLeft />
-          </button>
-          <div className="px-3 py-2 border-2 border-[#00256A] rounded-full text-[#00256A]">
-            1
-          </div>
-          <button
-            className="flex items-center gap-2 px-2 py-2 text-[#00256A] border-2 border-[#00256A] rounded-full hover:bg-blue-100 transition-all"
-          >
-            <FaArrowRight />
-          </button>
-        </div>
       </div>
-    </div>
   );
 };
 
 export default RejectIncidents;
+
+
+

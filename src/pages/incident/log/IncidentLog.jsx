@@ -1,7 +1,8 @@
 /*Purpose: This template is used for the 1.6 Sup - Incident Log page.
 Created Date: 2024-12-02
 Created By: Chamithu (chamithujayathilaka2003@gmail.com)
-Last Modified Date: 2024-12-02
+Last Modified Date: 2024-12-04
+Modified Date: 2024-12-03
 Modified By: Chamithu (chamithujayathilaka2003@gmail.com)
 Version: node 20
 ui number : v1.0.1
@@ -14,6 +15,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaSearch, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+
 
 const IncidentLog = () => {
   const [source, setSource] = useState("");
@@ -114,72 +116,73 @@ const IncidentLog = () => {
 
         {/* Filter Button */}
         <button
-          className="bg-[#002342] text-white px-8 py-2 rounded-lg shadow hover:bg-[#001F2B]"
-          onClick={handleFilter}
-        >
-          Filter
-        </button>
+  className="px-5 py-1 text-[#00256A] border-2 border-[#00256A] rounded-full hover:bg-[#00256A] hover:text-white transition-all"
+  onClick={handleFilter}
+>
+  Filter
+</button>
+
+
       </div>
 
       {/* Table */}
       <div className="overflow-hidden rounded-lg shadow-md border border-[#0087FF] border-opacity-15 bg-[#77BFFF] bg-opacity-25">
-        <table className="min-w-full text-sm text-left text-gray-500">
-          <thead className="text-sm text-[#718EBF] uppercase bg-gray-50 bg-opacity-75">
-            <tr>
-              <th className="px-6 py-4">ID</th>
-              <th className="px-6 py-4">Account No.</th>
-              <th className="px-6 py-4">Filtered Reason</th>
-              <th className="px-6 py-4">Created On</th>
-              <th className="px-6 py-4">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredData.map((incident, index) => (
-              <tr
-                key={index}
-                className={`${index % 2 === 0 ? "bg-white" : "bg-gray-50"} border-b`}
-              >
-                <td className="px-6 py-4 font-bold">{incident.id}</td>
-                <td className="px-6 py-4">{incident.accountNo}</td>
-                <td className="px-6 py-4">{incident.reason}</td>
-                <td className="px-6 py-4">{incident.date}</td>
-                <td className="px-6 py-4">{incident.status}</td>
-              </tr>
-            ))}
-            {filteredData.length === 0 && (
-              <tr>
-                <td colSpan="5" className="text-center py-4">No results found</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+  <table className="min-w-full text-sm text-left text-gray-500">
+    <thead className="text-xs text-[#718EBF] uppercase bg-gray-50 bg-opacity-75">
+      <tr>
+        <th className="px-6 py-3 text-center text-[18px] text-[#718EBF] uppercase bg-gray-50 bg-opacity-75">ID</th>
+        <th className="px-6 py-3 text-center text-[18px] text-[#718EBF] uppercase bg-gray-50 bg-opacity-75">Account No.</th>
+        <th className="px-6 py-3 text-center text-[18px] text-[#718EBF] uppercase bg-gray-50 bg-opacity-75">Filtered Reason</th>
+        <th className="px-6 py-3 text-center text-[18px] text-[#718EBF] uppercase bg-gray-50 bg-opacity-75">Created On</th>
+        <th className="px-6 py-3 text-center text-[18px] text-[#718EBF] uppercase bg-gray-50 bg-opacity-75">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {filteredData.map((incident, index) => (
+        <tr
+          key={index}
+          className={`${index % 2 === 0 ? "bg-white bg-opacity-75" : "bg-gray-50 bg-opacity-50"} border-b`}
+        >
+          <td className="px-6 py-4 text-center text-[16px]">{incident.id}</td>
+          <td className="px-6 py-4 text-center text-[16px]">{incident.accountNo}</td>
+          <td className="px-6 py-4 text-center text-[16px]">{incident.reason}</td>
+          <td className="px-6 py-4 text-center text-[16px]">{incident.date}</td>
+          <td className="px-6 py-4 text-center text-[16px]">{incident.status}</td>
+        </tr>
+      ))}
+      {filteredData.length === 0 && (
+        <tr>
+          <td colSpan="5" className="text-center py-4 text-[16px]">No results found</td>
+        </tr>
+      )}
+    </tbody>
+  </table>
       </div>
 
       {/* Pagination */}
       <div className="flex justify-center items-center gap-6 p-4">
-        {/* Previous Page Link */}
-        <button
-          className="flex items-center gap-2 px-2 py-2 text-[#00256A] border-2 border-[#00256A] rounded-full hover:bg-blue-100 transition-all"
-          onClick={handlePreviousPage}
-          disabled={currentPage === 1}
-        >
-          <FaArrowLeft />
-        </button>
-        
-        {/* Current Page Display */}
-        <div className="w-6 h-6 bg-gray-200 rounded-md flex items-center justify-center text-gray-600 font-semibold">
-          {currentPage}
-        </div>
-        
-        {/* Next Page Link */}
-        <button
-          className="flex items-center gap-2 px-2 py-2 text-[#00256A] border-2 border-[#00256A] rounded-full hover:bg-blue-100 transition-all"
-          onClick={handleNextPage}
-          disabled={currentPage === Math.ceil(incidents.length / itemsPerPage)}
-        >
-          <FaArrowRight />
-        </button>
-      </div>
+  {/* Previous Page Link */}
+  <button
+    className="flex items-center gap-2 px-2 py-2 text-[#00256A] border-2 border-[#00256A] rounded-full hover:bg-blue-100 transition-all"
+    onClick={handlePreviousPage}
+    disabled={currentPage === 1}
+  >
+    <FaArrowLeft />
+  </button>
+  
+  {/* Current Page Display (Removed) */}
+  {/* You can comment or delete this part if you don't want the current page to be shown */}
+  
+  {/* Next Page Link */}
+  <button
+    className="flex items-center gap-2 px-2 py-2 text-[#00256A] border-2 border-[#00256A] rounded-full hover:bg-blue-100 transition-all"
+    onClick={handleNextPage}
+    disabled={currentPage === Math.ceil(incidents.length / itemsPerPage)}
+  >
+    <FaArrowRight />
+  </button>
+</div>
+
     </div>
   );
 };

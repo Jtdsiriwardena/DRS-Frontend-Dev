@@ -2,8 +2,6 @@ import { useState } from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import Routers from "../router/Routers";
-import CaseList from "../pages/incident/log/CaseList";
-import CaseDetails from "../pages/incident/log/CaseDetails";
 
 const Layout = () => {
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
@@ -11,7 +9,7 @@ const Layout = () => {
   return (
     <div className="relative min-h-screen bg-fixed bg-cover bg-center">
       <div
-        className="absolute inset-0 bg-black opacity-30"
+        className="absolute inset-0 bg-black opacity-20"
         style={{
           backgroundImage: `url('/src/assets/images/bg.png')`,
           backgroundSize: "cover",
